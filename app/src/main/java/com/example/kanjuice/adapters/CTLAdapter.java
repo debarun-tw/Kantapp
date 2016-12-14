@@ -23,9 +23,9 @@ import com.example.kanjuice.utils.JuiceDecorator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JuiceAdapter extends BaseAdapter implements View.OnClickListener {
+public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
 
-    private static final String TAG = "JuiceAdapter";
+    private static final String TAG = "CTLAdapter";
     public static final int ANIMATION_DURATION = 500;
     private ArrayList<JuiceItem> juiceItems;
     private final LayoutInflater inflater;
@@ -33,7 +33,7 @@ public class JuiceAdapter extends BaseAdapter implements View.OnClickListener {
 
     private int[] quantityNumbers = {R.id.one, R.id.two, R.id.three, R.id.sugarlessCheckbox};
 
-    public JuiceAdapter(Context context) {
+    public CTLAdapter(Context context) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         juiceItems = new ArrayList<>();
         this.context = context;
@@ -178,7 +178,7 @@ public class JuiceAdapter extends BaseAdapter implements View.OnClickListener {
         final JuiceItem selectedJuiceItem = (JuiceItem) view.getTag();
         if (view.getId() == R.id.sugarlessCheckbox) {
             selectedJuiceItem.isSugarless = !((JuiceItem) view.getTag()).isSugarless;
-            Toast.makeText(context, "You selected "+ (selectedJuiceItem.isSugarless ? "without sugar" : "with sugar"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "You selected " + (selectedJuiceItem.isSugarless ? "without sugar" : "with sugar"), Toast.LENGTH_SHORT).show();
             Log.d(TAG, " is sugarless : " + selectedJuiceItem.isSugarless);
         } else {
             Log.d(TAG, "clicked on juice : " + selectedJuiceItem.juiceName
@@ -225,7 +225,6 @@ public class JuiceAdapter extends BaseAdapter implements View.OnClickListener {
                 juiceItems.add(new JuiceItem(juice.name, juice.imageId, juice.kanId, juice.isSugarless, false));
             }
         }
-        addFruitSection();
         addRegisterOption();
 
         notifyDataSetChanged();
@@ -234,15 +233,8 @@ public class JuiceAdapter extends BaseAdapter implements View.OnClickListener {
     private void addRegisterOption() {
         String registerUser = "Register User";
         juiceItems.add(new JuiceItem(registerUser, JuiceDecorator.matchImage(registerUser),
-                                     JuiceDecorator.matchKannadaName(registerUser),false, false));
+                JuiceDecorator.matchKannadaName(registerUser), false, false));
     }
-
-    private void addFruitSection() {
-        String fruits = "Fruits";
-        juiceItems.add(new JuiceItem(fruits, JuiceDecorator.matchImage(fruits),
-                JuiceDecorator.matchKannadaName(fruits),false, false));
-    }
-
 
     public static class ViewHolder {
         public LinearLayout singleItemView;

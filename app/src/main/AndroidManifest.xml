@@ -57,7 +57,7 @@
             android:label="@string/title_activity_region_selection"
             android:launchMode="singleTop"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activities.JuiceMenuActivity"
             android:label="@string/app_title"
@@ -97,11 +97,6 @@
             android:label="@string/title_activity_register"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".activities.FruitsMenuActivity"
-            android:label="@string/title_activity_fruits"
-            android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.Light.Dialog" />
 
         <service
             android:name=".BluetoothReaderService"
@@ -128,7 +123,7 @@
         </service>
         <service
             android:name=".service.GCMRegistrationIntentService"
-     android:exported="false">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>

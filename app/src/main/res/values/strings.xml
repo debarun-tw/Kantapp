@@ -75,6 +75,6 @@
     <string name="crash_toast_text">Bengaluru Facilities team will be informed about this issue !</string>
     <string name="senderId">610412178409</string>
     <string name="location">blr</string>
-    <string name="outlet_type">juice</string>
-    <string name="device_id">123</string>
+    <string name="outlet_type">ctl</string>
+    <string name="device_id">124</string>
 </resources>

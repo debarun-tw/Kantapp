@@ -100,9 +100,9 @@ public class UserInputActivity extends Activity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String notificationPayload = intent.getStringExtra(NOTIFICATION_PAYLOAD);
-                if(notificationPayload!=null){
+                if (notificationPayload != null) {
                     String employeeId = extractEmployeeId(notificationPayload);
-                    Log.d(TAG,"EmployeeId is : "+employeeId);
+                    Log.d(TAG, "EmployeeId is : " + employeeId);
                     placeOrder(employeeId);
                 }
             }
@@ -111,8 +111,8 @@ public class UserInputActivity extends Activity {
     }
 
     private String extractEmployeeId(String notificationPayload) {
-        if(!notificationPayload.endsWith(",")){
-            return notificationPayload.substring(notificationPayload.lastIndexOf(",")+1,notificationPayload.length());
+        if (!notificationPayload.endsWith(",")) {
+            return notificationPayload.substring(notificationPayload.lastIndexOf(",") + 1, notificationPayload.length());
         }
         return null;
     }
@@ -194,12 +194,10 @@ public class UserInputActivity extends Activity {
     }
 
     private void placeOrder(String cardNumber) {
-        if (cardNumber==null|| cardNumber.length() == 5) {
+        if (cardNumber == null || cardNumber.length() == 5) {
             showOrdering();
             placeOrderForEuid(cardNumber);
-        }
-        else
-            if (cardNumber.length() == 3) {
+        } else if (cardNumber.length() == 3) {
             handleEasterEggs(cardNumber);
         } else {
             Toast.makeText(UserInputActivity.this, "Employee id entered is not valid", LENGTH_SHORT).show();
@@ -375,15 +373,12 @@ public class UserInputActivity extends Activity {
         }
 
         if (count == 1) {
-            return (((JuiceItem) juices[0]).juiceName + getSuffixForOrder(juices[0]) + isSugarless(juices[0]));
+            return (((JuiceItem) juices[0]).juiceName +" "+ isSugarless(juices[0]));
         } else {
             return (count + " juices");
         }
     }
 
-    private String getSuffixForOrder(Parcelable juice) {
-        return ((JuiceItem) juice).isFruit ? " fruit " : " juice ";
-    }
 
     private String isSugarless(Parcelable juice) {
         if (((JuiceItem) juice).isFruit) return "";

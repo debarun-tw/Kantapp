@@ -9,7 +9,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -22,7 +21,7 @@ import com.example.kanjuice.JuiceServer;
 import com.example.kanjuice.KanJuiceApp;
 import com.example.kanjuice.R;
 import com.example.kanjuice.TokenServer;
-import com.example.kanjuice.adapters.JuiceAdapter;
+import com.example.kanjuice.adapters.CTLAdapter;
 import com.example.kanjuice.models.GCMToken;
 import com.example.kanjuice.models.Juice;
 import com.example.kanjuice.models.JuiceItem;
@@ -30,6 +29,9 @@ import com.example.kanjuice.service.GCMRegistrationIntentService;
 import com.example.kanjuice.util.Logger;
 import com.example.kanjuice.utils.JuiceDecorator;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit.Callback;
@@ -42,7 +44,7 @@ public class JuiceMenuActivity extends Activity {
 
     private static final String TAG = "JuiceMenuActivity";
     private static final String TOKEN_URL = "http://10.132.127.212:4000";
-    private JuiceAdapter adapter;
+    private CTLAdapter adapter;
     private boolean isInMultiSelectMode = false;
     private View goButton;
     private View cancelButton;
@@ -56,10 +58,6 @@ public class JuiceMenuActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        SharedPreferences sharedPreferences = getSharedPreferences("AppSharedPreferences", Context.MODE_PRIVATE);
-        String selectedRegion = sharedPreferences.getString("selectedRegion", null);
 
         setContentView(R.layout.activity_juice_menu);
         Intent intent = new Intent(this, GCMRegistrationIntentService.class);
@@ -128,7 +126,20 @@ public class JuiceMenuActivity extends Activity {
                     public void run() {
                         menuLoadingView.setVisibility(View.GONE);
                         juicesView.setVisibility(View.VISIBLE);
-                        onJuicesListReceived(juices);
+                        Iterator<Juice> iterator = juices.iterator();
+                        HashSet<String> ctl = new HashSet<>();
+                        ctl.add("tea");
+                        ctl.add("lemon tea");
+                        ctl.add("ginger tea");
+                        ctl.add("coffee");
+                        List<Juice> hotDrinks = new ArrayList<>();
+                        while (iterator.hasNext()) {
+                            Juice juice = iterator.next();
+                            if (ctl.contains(juice.name.toLowerCase())) {
+                                hotDrinks.add(juice);
+                            }
+                        }
+                        onJuicesListReceived(hotDrinks);
                     }
                 });
             }
@@ -287,7 +298,7 @@ public class JuiceMenuActivity extends Activity {
     }
 
     private void setupAdapter(GridView juicesView) {
-        adapter = new JuiceAdapter(this);
+        adapter = new CTLAdapter(this);
         juicesView.setAdapter(adapter);
     }
 
@@ -330,7 +341,7 @@ public class JuiceMenuActivity extends Activity {
 
     private void gotoSwipingScreen(JuiceItem[] juiceItems) {
         if (isFruitsSection(juiceItems)) {
-            showFruitsSection();
+//            showFruitsSection();
         } else {
             Intent intent = new Intent(JuiceMenuActivity.this, UserInputActivity.class);
             intent.putExtra("juices", juiceItems);
@@ -342,8 +353,8 @@ public class JuiceMenuActivity extends Activity {
         return juiceItems[0].juiceName.equals("Fruits");
     }
 
-    private void showFruitsSection() {
-        Intent intent = new Intent(JuiceMenuActivity.this, FruitsMenuActivity.class);
-        startActivity(intent);
-    }
+//    private void showFruitsSection() {
+//        Intent intent = new Intent(JuiceMenuActivity.this, FruitsMenuActivity.class);
+//        startActivity(intent);
+//    }
 }
