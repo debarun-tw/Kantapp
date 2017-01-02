@@ -1,7 +1,7 @@
 package com.example.kanjuice;
 
 
-import com.example.kanjuice.models.Juice;
+import com.example.kanjuice.models.HotDrink;
 import com.example.kanjuice.models.User;
 import com.example.kanjuice.utils.TypedJsonString;
 
@@ -17,7 +17,7 @@ import retrofit.http.Path;
 public interface JuiceServer {
 
     @GET("/api/beverages/juices")
-    public void getJuices(Callback<List<Juice>> cb);
+    public void getJuices(Callback<List<HotDrink>> cb);
 
     @GET("/api/users/internalNumber/{cardNumber}")
     public void getUserByCardNumber(@Path("cardNumber") int cardNumber, Callback<User> cb);

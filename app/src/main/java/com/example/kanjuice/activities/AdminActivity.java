@@ -10,7 +10,7 @@ import com.example.kanjuice.utils.JuiceDecorator;
 import com.example.kanjuice.JuiceServer;
 import com.example.kanjuice.KanJuiceApp;
 import com.example.kanjuice.R;
-import com.example.kanjuice.models.Juice;
+import com.example.kanjuice.models.HotDrink;
 import com.example.kanjuice.utils.TypedJsonString;
 
 import java.util.ArrayList;
@@ -43,11 +43,11 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
 
     private void setupViews() {
         ListView list = (ListView) findViewById(R.id.list);
-        adapter = new ListAvailAdapter(this, new ArrayList<Juice>());
+        adapter = new ListAvailAdapter(this, new ArrayList<HotDrink>());
         list.setAdapter(adapter);
     }
 
-    private void setJuiceAvailability(final Juice juice) {
+    private void setJuiceAvailability(final HotDrink juice) {
         Log.d(TAG, "setJuiceAvailability: "  + juice.asJson());
         getJuiceServer().updateJuice(new TypedJsonString(juice.asJson()), new Callback<Response>() {
 
@@ -65,9 +65,9 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
     }
 
     private void fetchMenu() {
-        getJuiceServer().getJuices(new Callback<List<Juice>>() {
+        getJuiceServer().getJuices(new Callback<List<HotDrink>>() {
             @Override
-            public void success(final List<Juice> juices, Response response) {
+            public void success(final List<HotDrink> juices, Response response) {
                 AdminActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -87,7 +87,7 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Juice juice = (Juice) buttonView.getTag();
+        HotDrink juice = (HotDrink) buttonView.getTag();
         if (juice != null) {
             juice.available = !juice.available;
             setJuiceAvailability(juice);
@@ -97,10 +97,10 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
     public static class ListAvailAdapter extends BaseAdapter {
 
         private AdminActivity adminActivity;
-        private final List<Juice> juices;
+        private final List<HotDrink> juices;
         private LayoutInflater inflater;
 
-        public ListAvailAdapter(AdminActivity adminActivity, List<Juice> juices) {
+        public ListAvailAdapter(AdminActivity adminActivity, List<HotDrink> juices) {
             this.adminActivity = adminActivity;
             this.juices = juices;
             inflater = (LayoutInflater) adminActivity.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -124,11 +124,11 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = inflater.inflate(R.layout.juice_avail_item, parent, false);
-            bind(view, (Juice) getItem(position));
+            bind(view, (HotDrink) getItem(position));
             return view;
         }
 
-        private void bind(View view, final Juice juice) {
+        private void bind(View view, final HotDrink juice) {
             TextView titleView = (TextView) view.findViewById(R.id.title);
             titleView.setText(juice.name);
 
@@ -143,7 +143,7 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
             view.setTag(juice);
         }
 
-        public void addAll(List<Juice> juices) {
+        public void addAll(List<HotDrink> juices) {
             this.juices.addAll(juices);
             notifyDataSetChanged();
         }

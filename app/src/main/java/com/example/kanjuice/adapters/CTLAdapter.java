@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kanjuice.R;
-import com.example.kanjuice.models.Juice;
+import com.example.kanjuice.models.HotDrink;
 import com.example.kanjuice.models.TeaItem;
 import com.example.kanjuice.utils.JuiceDecorator;
 
@@ -217,10 +217,10 @@ public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
         notifyDataSetChanged();
     }
 
-    public void addAll(List<Juice> juices) {
+    public void addAll(List<HotDrink> juices) {
         teaItems = new ArrayList<>();
 
-        for (Juice juice : juices) {
+        for (HotDrink juice : juices) {
             if (juice.available) {
                 teaItems.add(new TeaItem(juice.name, juice.imageId, juice.kanId, juice.isSugarless, false));
             }

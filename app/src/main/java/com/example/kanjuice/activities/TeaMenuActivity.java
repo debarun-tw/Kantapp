@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +24,7 @@ import com.example.kanjuice.R;
 import com.example.kanjuice.TokenServer;
 import com.example.kanjuice.adapters.CTLAdapter;
 import com.example.kanjuice.models.GCMToken;
-import com.example.kanjuice.models.Juice;
+import com.example.kanjuice.models.HotDrink;
 import com.example.kanjuice.models.TeaItem;
 import com.example.kanjuice.service.GCMRegistrationIntentService;
 import com.example.kanjuice.util.Logger;
@@ -50,7 +51,7 @@ public class TeaMenuActivity extends Activity {
     private View cancelButton;
     private View actionButtonLayout;
     private View noNetworkView;
-    private GridView juicesView;
+    private GridView hotDrinksView;
     private View menuLoadingView;
     private BroadcastReceiver broadcastReceiver;
     private Logger logger = Logger.loggerFor(TeaMenuActivity.class);
@@ -80,6 +81,15 @@ public class TeaMenuActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        receiveGCMToken();
+        exitMultiSelectMode();
+
+        fetchMenu();
+        Log.d("Splash activity", "resume");
+        registerForGCM();
+    }
+
+    private void receiveGCMToken() {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -91,11 +101,9 @@ public class TeaMenuActivity extends Activity {
                 }
             }
         };
+    }
 
-        exitMultiSelectMode();
-
-        fetchMenu();
-        Log.d("Splash activity", "resume");
+    private void registerForGCM() {
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new
                 IntentFilter(GCMRegistrationIntentService.REGISTRATION_SUCESS));
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
@@ -118,27 +126,16 @@ public class TeaMenuActivity extends Activity {
     }
 
     private void fetchMenu() {
-        getJuiceServer().getJuices(new Callback<List<Juice>>() {
+        getJuiceServer().getJuices(new Callback<List<HotDrink>>() {
             @Override
-            public void success(final List<Juice> juices, Response response) {
+            public void success(final List<HotDrink> juices, Response response) {
                 TeaMenuActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         menuLoadingView.setVisibility(View.GONE);
-                        juicesView.setVisibility(View.VISIBLE);
-                        Iterator<Juice> iterator = juices.iterator();
-                        HashSet<String> ctl = new HashSet<>();
-                        ctl.add("tea");
-                        ctl.add("lemon tea");
-                        ctl.add("ginger tea");
-                        ctl.add("coffee");
-                        List<Juice> hotDrinks = new ArrayList<>();
-                        while (iterator.hasNext()) {
-                            Juice juice = iterator.next();
-                            if (ctl.contains(juice.name.toLowerCase())) {
-                                hotDrinks.add(juice);
-                            }
-                        }
+                        hotDrinksView.setVisibility(View.VISIBLE);
+                        Iterator<HotDrink> allDrinks = juices.iterator();
+                        List<HotDrink> hotDrinks = filterHotDrinks(allDrinks);
                         onJuicesListReceived(hotDrinks);
                     }
                 });
@@ -158,22 +155,39 @@ public class TeaMenuActivity extends Activity {
         });
     }
 
+    @NonNull
+    private List<HotDrink> filterHotDrinks(Iterator<HotDrink> allDrinks) {
+        HashSet<String> ctl = new HashSet<>();
+        ctl.add("tea");
+        ctl.add("lemon tea");
+        ctl.add("ginger tea");
+        ctl.add("coffee");
+        List<HotDrink> hotDrinks = new ArrayList<>();
+        while (allDrinks.hasNext()) {
+            HotDrink juice = allDrinks.next();
+            if (ctl.contains(juice.name.toLowerCase())) {
+                hotDrinks.add(juice);
+            }
+        }
+        return hotDrinks;
+    }
+
     private void showNoNetworkView() {
         noNetworkView.setVisibility(View.VISIBLE);
-        juicesView.setVisibility(View.GONE);
+        hotDrinksView.setVisibility(View.GONE);
         menuLoadingView.setVisibility(View.GONE);
     }
 
 
-    private void onJuicesListReceived(List<Juice> juices) {
-        decorate(juices);
-        adapter.addAll(juices);
+    private void onJuicesListReceived(List<HotDrink> hotDrinks) {
+        decorate(hotDrinks);
+        adapter.addAll(hotDrinks);
     }
 
-    private void decorate(List<Juice> juices) {
-        for (Juice juice : juices) {
-            juice.imageId = JuiceDecorator.matchImage(juice.name);
-            juice.kanId = JuiceDecorator.matchKannadaName(juice.name);
+    private void decorate(List<HotDrink> hotDrinks) {
+        for (HotDrink hotDrink : hotDrinks) {
+            hotDrink.imageId = JuiceDecorator.matchImage(hotDrink.name);
+            hotDrink.kanId = JuiceDecorator.matchKannadaName(hotDrink.name);
         }
     }
 
@@ -186,20 +200,20 @@ public class TeaMenuActivity extends Activity {
     }
 
     private void setupViews() {
-        juicesView = (GridView) findViewById(R.id.grid);
-        setupAdapter(juicesView);
+        hotDrinksView = (GridView) findViewById(R.id.grid);
+        setupAdapter(hotDrinksView);
 
-        juicesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        hotDrinksView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 onJuiceItemClick(position);
             }
         });
 
-        juicesView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        hotDrinksView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                return onJuiceItemLongClick(position);
+                return onHotDrinksItemLongClick(position);
             }
         });
 
@@ -245,8 +259,8 @@ public class TeaMenuActivity extends Activity {
         });
     }
 
-    private boolean onJuiceItemLongClick(int position) {
-        if (isRegisterActivity(position) || isFruitsSection(position)) {
+    private boolean onHotDrinksItemLongClick(int position) {
+        if (isRegisterActivity(position)) {
             return false;
         }
         adapter.toggleSelectionChoice(position);
@@ -271,10 +285,6 @@ public class TeaMenuActivity extends Activity {
 
     private boolean isRegisterActivity(int position) {
         return ((TeaItem) adapter.getItem(position)).teaName.equals("Register User");
-    }
-
-    private boolean isFruitsSection(int position) {
-        return ((TeaItem) adapter.getItem(position)).teaName.equals("Fruits");
     }
 
     private void setupActionLayout() {
@@ -340,21 +350,8 @@ public class TeaMenuActivity extends Activity {
     }
 
     private void gotoSwipingScreen(TeaItem[] teaItems) {
-        if (isFruitsSection(teaItems)) {
-//            showFruitsSection();
-        } else {
-            Intent intent = new Intent(TeaMenuActivity.this, UserInputActivity.class);
-            intent.putExtra("juices", teaItems);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(TeaMenuActivity.this, UserInputActivity.class);
+        intent.putExtra("juices", teaItems);
+        startActivity(intent);
     }
-
-    private boolean isFruitsSection(TeaItem[] teaItems) {
-        return teaItems[0].teaName.equals("Fruits");
-    }
-
-//    private void showFruitsSection() {
-//        Intent intent = new Intent(TeaMenuActivity.this, FruitsMenuActivity.class);
-//        startActivity(intent);
-//    }
 }
