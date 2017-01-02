@@ -351,7 +351,7 @@ public class TeaMenuActivity extends Activity {
 
     private void gotoSwipingScreen(TeaItem[] teaItems) {
         Intent intent = new Intent(TeaMenuActivity.this, UserInputActivity.class);
-        intent.putExtra("juices", teaItems);
+        intent.putExtra("hotDrinks", teaItems);
         startActivity(intent);
     }
 }

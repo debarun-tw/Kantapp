@@ -26,8 +26,8 @@ import com.example.kanjuice.JuiceServer;
 import com.example.kanjuice.KanJuiceApp;
 import com.example.kanjuice.R;
 import com.example.kanjuice.gcm.GCMReceiverService;
-import com.example.kanjuice.models.TeaItem;
 import com.example.kanjuice.models.Order;
+import com.example.kanjuice.models.TeaItem;
 import com.example.kanjuice.models.User;
 import com.example.kanjuice.utils.AndroidUtils;
 import com.example.kanjuice.utils.TypedJsonString;
@@ -48,7 +48,7 @@ public class UserInputActivity extends Activity {
     private static final int REQUEST_CODE_ADMIN = 1001;
     private static final int REQUEST_CODE_REGISTER = 1002;
     private static final int MSG_FINISH = 101;
-    private Parcelable[] juices;
+    private Parcelable[] hotDrinks;
     private View cardLayout;
     private View euidLayout;
     private View orLayout;
@@ -80,8 +80,8 @@ public class UserInputActivity extends Activity {
 
         setContentView(R.layout.activity_user_input);
 
-        juices = getIntent().getParcelableArrayExtra("juices");
-        setupViews(juices);
+        hotDrinks = getIntent().getParcelableArrayExtra("hotDrinks");
+        setupViews(hotDrinks);
     }
 
     @Override
@@ -353,7 +353,7 @@ public class UserInputActivity extends Activity {
         order.employeeId = user.empId;
         order.employeeName = user.employeeName;
         order.isSwipe = isSwipe;
-        for (Parcelable juice : juices) {
+        for (Parcelable juice : hotDrinks) {
             TeaItem item = (TeaItem) juice;
             order.addDrink(item.teaName, item.isSugarless, item.selectedQuantity, item.isFruit);
         }
@@ -373,9 +373,9 @@ public class UserInputActivity extends Activity {
         }
 
         if (count == 1) {
-            return (((TeaItem) juices[0]).teaName +" "+ isSugarless(juices[0]));
+            return (((TeaItem) juices[0]).teaName + " " + isSugarless(juices[0]));
         } else {
-            return (count + " juices");
+            return (count + " hotDrinks");
         }
     }
 
