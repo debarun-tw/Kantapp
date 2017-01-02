@@ -9,7 +9,7 @@ public class JuiceDecorator {
     private static HashMap<String, Integer> imageIdMap;
     private static HashMap<String, Integer> kanTextMap;
 
-   static {
+    static {
         imageIdMap = new HashMap<>();
         imageIdMap.put("amla", R.drawable.amla);
         imageIdMap.put("black jeera masala soda", R.drawable.black_jeera_masala_soda);
@@ -50,6 +50,10 @@ public class JuiceDecorator {
         imageIdMap.put("register user", R.drawable.register_user);
         imageIdMap.put("fruits", R.drawable.fruits);
         imageIdMap.put("strawberry milk shake", R.drawable.strawberry);
+        imageIdMap.put("tea", R.drawable.tea);
+        imageIdMap.put("lemon tea", R.drawable.lemon_tea);
+        imageIdMap.put("ginger tea", R.drawable.ginger_tea);
+        imageIdMap.put("coffee", R.drawable.coffee);
 
 
         kanTextMap = new HashMap<>();
@@ -92,6 +96,7 @@ public class JuiceDecorator {
         kanTextMap.put("custardapple", R.string.custard_apple);
         kanTextMap.put("papaya", R.string.papaya);
         kanTextMap.put("fruits", R.string.fruits);
+
 
     }
 
