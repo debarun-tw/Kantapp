@@ -2,18 +2,27 @@ package com.example.kanjuice.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.*;
-import android.widget.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import com.example.kanjuice.utils.JuiceDecorator;
 import com.example.kanjuice.JuiceServer;
 import com.example.kanjuice.KanJuiceApp;
 import com.example.kanjuice.R;
 import com.example.kanjuice.models.HotDrink;
+import com.example.kanjuice.utils.JuiceDecorator;
 import com.example.kanjuice.utils.TypedJsonString;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit.Callback;
@@ -33,6 +42,7 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
         setupViews();
         fetchMenu();
     }
+
     private KanJuiceApp getApp() {
         return (KanJuiceApp) getApplication();
     }
@@ -48,7 +58,7 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
     }
 
     private void setJuiceAvailability(final HotDrink juice) {
-        Log.d(TAG, "setJuiceAvailability: "  + juice.asJson());
+        Log.d(TAG, "setJuiceAvailability: " + juice.asJson());
         getJuiceServer().updateJuice(new TypedJsonString(juice.asJson()), new Callback<Response>() {
 
             @Override
@@ -71,7 +81,9 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
                 AdminActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.addAll(juices);
+                        Iterator<HotDrink> allDrinks = juices.iterator();
+                        List<HotDrink> hotDrinks = filterHotDrinks(allDrinks);
+                        adapter.addAll(hotDrinks);
                     }
                 });
             }
@@ -83,6 +95,23 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
 
             }
         });
+    }
+
+    @NonNull
+    private List<HotDrink> filterHotDrinks(Iterator<HotDrink> allDrinks) {
+        HashSet<String> ctl = new HashSet<>();
+        ctl.add("tea");
+        ctl.add("lemon tea");
+        ctl.add("ginger tea");
+        ctl.add("coffee");
+        List<HotDrink> hotDrinks = new ArrayList<>();
+        while (allDrinks.hasNext()) {
+            HotDrink juice = allDrinks.next();
+            if (ctl.contains(juice.name.toLowerCase())) {
+                hotDrinks.add(juice);
+            }
+        }
+        return hotDrinks;
     }
 
     @Override
