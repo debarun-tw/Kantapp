@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.example.kanjuice.R;
 import com.example.kanjuice.models.Juice;
-import com.example.kanjuice.models.JuiceItem;
+import com.example.kanjuice.models.TeaItem;
 import com.example.kanjuice.utils.JuiceDecorator;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
 
     private static final String TAG = "CTLAdapter";
     public static final int ANIMATION_DURATION = 500;
-    private ArrayList<JuiceItem> juiceItems;
+    private ArrayList<TeaItem> teaItems;
     private final LayoutInflater inflater;
     Context context;
 
@@ -35,18 +35,18 @@ public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
 
     public CTLAdapter(Context context) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        juiceItems = new ArrayList<>();
+        teaItems = new ArrayList<>();
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return juiceItems.size();
+        return teaItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return juiceItems.get(position);
+        return teaItems.get(position);
     }
 
     @Override
@@ -57,38 +57,38 @@ public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView == null ? newView(parent) : convertView;
-        bind(view, juiceItems.get(position));
+        bind(view, teaItems.get(position));
         return view;
     }
 
-    private void bind(View view, final JuiceItem juiceItem) {
+    private void bind(View view, final TeaItem teaItem) {
         final ViewHolder h = (ViewHolder) view.getTag();
 
-        if (juiceItem.animate) {
-            showContentWithAnimation(h, juiceItem);
+        if (teaItem.animate) {
+            showContentWithAnimation(h, teaItem);
         } else {
-            showContent(h, juiceItem);
+            showContent(h, teaItem);
         }
 
-        if (juiceItem.isMultiSelected) {
-            h.multiSelect.titleView.setText(juiceItem.juiceName);
-            if (juiceItem.isSugarless) {
+        if (teaItem.isMultiSelected) {
+            h.multiSelect.titleView.setText(teaItem.teaName);
+            if (teaItem.isSugarless) {
                 h.multiSelect.sugarlessCheckbox.setChecked(true);
             }
             for (View v : h.multiSelect.quantityViews) {
                 v.setSelected(false);
-                v.setTag(juiceItem);
+                v.setTag(teaItem);
             }
-            h.multiSelect.quantityViews.get(juiceItem.selectedQuantity - 1).setSelected(true);
+            h.multiSelect.quantityViews.get(teaItem.selectedQuantity - 1).setSelected(true);
         } else {
-            h.singleSelect.titleView.setText(juiceItem.juiceName);
-            h.singleSelect.titleInKanView.setText(juiceItem.kanResId);
-            h.singleSelect.imageView.setImageResource(juiceItem.imageResId);
+            h.singleSelect.titleView.setText(teaItem.teaName);
+            h.singleSelect.titleInKanView.setText(teaItem.kanResId);
+            h.singleSelect.imageView.setImageResource(teaItem.imageResId);
         }
     }
 
-    private void showContentWithAnimation(final ViewHolder h, final JuiceItem juiceItem) {
-        if (h.multiSelectView.getVisibility() == View.INVISIBLE && juiceItem.isMultiSelected) {
+    private void showContentWithAnimation(final ViewHolder h, final TeaItem teaItem) {
+        if (h.multiSelectView.getVisibility() == View.INVISIBLE && teaItem.isMultiSelected) {
             h.multiSelectView.setVisibility(View.VISIBLE);
             h.multiSelect.sugarlessCheckbox.setChecked(false);
             ObjectAnimator anim = ObjectAnimator.ofFloat(h.multiSelectView, "translationY", 500f, 0f);
@@ -105,12 +105,12 @@ public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
             anim1.addListener(new AnimatorListenerAdapter() {
                 public void onAnimationEnd(Animator animation) {
                     h.singleItemView.setVisibility(View.INVISIBLE);
-                    juiceItem.animate = false;
+                    teaItem.animate = false;
                 }
             });
             anim1.start();
 
-        } else if (h.multiSelectView.getVisibility() == View.VISIBLE && !juiceItem.isMultiSelected) {
+        } else if (h.multiSelectView.getVisibility() == View.VISIBLE && !teaItem.isMultiSelected) {
             ObjectAnimator anim = ObjectAnimator.ofFloat(h.multiSelectView, "translationY", -0f, 500f);
             anim.setDuration(ANIMATION_DURATION);
             anim.addListener(new AnimatorListenerAdapter() {
@@ -126,21 +126,21 @@ public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
             anim1.addListener(new AnimatorListenerAdapter() {
                 public void onAnimationEnd(Animator animation) {
                     h.singleItemView.setVisibility(View.VISIBLE);
-                    juiceItem.animate = false;
+                    teaItem.animate = false;
                 }
             });
             anim1.start();
         }
     }
 
-    private void showContent(ViewHolder h, JuiceItem juiceItem) {
+    private void showContent(ViewHolder h, TeaItem teaItem) {
         h.multiSelectView.setTranslationY(0f);
         h.multiSelectView.setTranslationY(0f);
         h.singleItemView.setTranslationY(0f);
         h.singleItemView.setTranslationY(0f);
 
-        h.multiSelectView.setVisibility(juiceItem.isMultiSelected ? View.VISIBLE : View.INVISIBLE);
-        h.singleItemView.setVisibility(juiceItem.isMultiSelected ? View.INVISIBLE : View.VISIBLE);
+        h.multiSelectView.setVisibility(teaItem.isMultiSelected ? View.VISIBLE : View.INVISIBLE);
+        h.singleItemView.setVisibility(teaItem.isMultiSelected ? View.INVISIBLE : View.VISIBLE);
     }
 
     private View newView(ViewGroup parent) {
@@ -175,54 +175,54 @@ public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        final JuiceItem selectedJuiceItem = (JuiceItem) view.getTag();
+        final TeaItem selectedTeaItem = (TeaItem) view.getTag();
         if (view.getId() == R.id.sugarlessCheckbox) {
-            selectedJuiceItem.isSugarless = !((JuiceItem) view.getTag()).isSugarless;
-            Toast.makeText(context, "You selected " + (selectedJuiceItem.isSugarless ? "without sugar" : "with sugar"), Toast.LENGTH_SHORT).show();
-            Log.d(TAG, " is sugarless : " + selectedJuiceItem.isSugarless);
+            selectedTeaItem.isSugarless = !((TeaItem) view.getTag()).isSugarless;
+            Toast.makeText(context, "You selected " + (selectedTeaItem.isSugarless ? "without sugar" : "with sugar"), Toast.LENGTH_SHORT).show();
+            Log.d(TAG, " is sugarless : " + selectedTeaItem.isSugarless);
         } else {
-            Log.d(TAG, "clicked on juice : " + selectedJuiceItem.juiceName
-                    + " qty: " + Integer.parseInt(((TextView) view).getText().toString()) + " is Sugarless : " + selectedJuiceItem.isSugarless);
-            selectedJuiceItem.selectedQuantity = Integer.parseInt(((TextView) view).getText().toString());
+            Log.d(TAG, "clicked on juice : " + selectedTeaItem.teaName
+                    + " qty: " + Integer.parseInt(((TextView) view).getText().toString()) + " is Sugarless : " + selectedTeaItem.isSugarless);
+            selectedTeaItem.selectedQuantity = Integer.parseInt(((TextView) view).getText().toString());
         }
         notifyDataSetChanged();
     }
 
     public void toggleSelectionChoice(int position) {
-        juiceItems.get(position).isMultiSelected = !juiceItems.get(position).isMultiSelected;
-        juiceItems.get(position).animate = true;
+        teaItems.get(position).isMultiSelected = !teaItems.get(position).isMultiSelected;
+        teaItems.get(position).animate = true;
         notifyDataSetChanged();
     }
 
-    public JuiceItem[] getSelectedJuices() {
-        List<JuiceItem> selectedJuiceItems = new ArrayList<>();
-        for (JuiceItem item : juiceItems) {
+    public TeaItem[] getSelectedJuices() {
+        List<TeaItem> selectedTeaItems = new ArrayList<>();
+        for (TeaItem item : teaItems) {
             if (item.isMultiSelected) {
-                selectedJuiceItems.add(item);
+                selectedTeaItems.add(item);
             }
         }
 
-        JuiceItem[] selectedJuicesArray = new JuiceItem[selectedJuiceItems.size()];
-        selectedJuiceItems.toArray(selectedJuicesArray);
+        TeaItem[] selectedJuicesArray = new TeaItem[selectedTeaItems.size()];
+        selectedTeaItems.toArray(selectedJuicesArray);
         return selectedJuicesArray;
     }
 
     public void reset() {
-        for (JuiceItem juiceItem : juiceItems) {
-            juiceItem.animate = juiceItem.isMultiSelected;
-            juiceItem.isMultiSelected = false;
-            juiceItem.selectedQuantity = 1;
-            juiceItem.isSugarless = false;
+        for (TeaItem teaItem : teaItems) {
+            teaItem.animate = teaItem.isMultiSelected;
+            teaItem.isMultiSelected = false;
+            teaItem.selectedQuantity = 1;
+            teaItem.isSugarless = false;
         }
         notifyDataSetChanged();
     }
 
     public void addAll(List<Juice> juices) {
-        juiceItems = new ArrayList<>();
+        teaItems = new ArrayList<>();
 
         for (Juice juice : juices) {
             if (juice.available) {
-                juiceItems.add(new JuiceItem(juice.name, juice.imageId, juice.kanId, juice.isSugarless, false));
+                teaItems.add(new TeaItem(juice.name, juice.imageId, juice.kanId, juice.isSugarless, false));
             }
         }
         addRegisterOption();
@@ -232,7 +232,7 @@ public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
 
     private void addRegisterOption() {
         String registerUser = "Register User";
-        juiceItems.add(new JuiceItem(registerUser, JuiceDecorator.matchImage(registerUser),
+        teaItems.add(new TeaItem(registerUser, JuiceDecorator.matchImage(registerUser),
                 JuiceDecorator.matchKannadaName(registerUser), false, false));
     }
 

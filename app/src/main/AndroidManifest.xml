@@ -59,7 +59,7 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <activity
-            android:name=".activities.JuiceMenuActivity"
+            android:name=".activities.TeaMenuActivity"
             android:label="@string/app_title"
             android:launchMode="singleTop"
             android:screenOrientation="landscape"

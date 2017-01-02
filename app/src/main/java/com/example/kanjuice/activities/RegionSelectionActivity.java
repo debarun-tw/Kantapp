@@ -36,7 +36,7 @@ public class RegionSelectionActivity extends Activity{
     }
 
     private void gotoJuiceMenuActivity() {
-        Intent intent = new Intent(RegionSelectionActivity.this, JuiceMenuActivity.class);
+        Intent intent = new Intent(RegionSelectionActivity.this, TeaMenuActivity.class);
         startActivity(intent);
     }
 

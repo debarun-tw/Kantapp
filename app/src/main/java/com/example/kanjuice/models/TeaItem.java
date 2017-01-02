@@ -3,8 +3,8 @@ package com.example.kanjuice.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class JuiceItem implements Parcelable {
-    public String juiceName;
+public class TeaItem implements Parcelable {
+    public String teaName;
     public boolean isMultiSelected;
     public int selectedQuantity;
     public boolean isSugarless;
@@ -14,8 +14,8 @@ public class JuiceItem implements Parcelable {
     public boolean isFruit;
 
 
-    public JuiceItem(String juiceName, int imageId, int kanResId, boolean isSugarless, boolean isFruit) {
-        this.juiceName = juiceName;
+    public TeaItem(String teaName, int imageId, int kanResId, boolean isSugarless, boolean isFruit) {
+        this.teaName = teaName;
         this.imageResId = imageId;
         this.kanResId = kanResId;
         this.isSugarless = isSugarless;
@@ -31,24 +31,24 @@ public class JuiceItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(juiceName);
+        dest.writeString(teaName);
         dest.writeByte((byte) (isSugarless ? 1:0));
         dest.writeByte((byte) (isFruit ? 1 : 0));
         dest.writeInt(selectedQuantity);
     }
 
-    public static final Creator<JuiceItem> CREATOR = new Creator<JuiceItem>() {
-        public JuiceItem createFromParcel(Parcel in) {
-            return new JuiceItem(in);
+    public static final Creator<TeaItem> CREATOR = new Creator<TeaItem>() {
+        public TeaItem createFromParcel(Parcel in) {
+            return new TeaItem(in);
         }
 
-        public JuiceItem[] newArray(int size) {
-            return new JuiceItem[size];
+        public TeaItem[] newArray(int size) {
+            return new TeaItem[size];
         }
     };
 
-    private JuiceItem(Parcel in) {
-        juiceName = in.readString();
+    private TeaItem(Parcel in) {
+        teaName = in.readString();
         isSugarless = in.readByte() != 0;
         isFruit = in.readByte() != 0;
         selectedQuantity = in.readInt();

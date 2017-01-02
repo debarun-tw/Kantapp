@@ -26,7 +26,7 @@ import com.example.kanjuice.JuiceServer;
 import com.example.kanjuice.KanJuiceApp;
 import com.example.kanjuice.R;
 import com.example.kanjuice.gcm.GCMReceiverService;
-import com.example.kanjuice.models.JuiceItem;
+import com.example.kanjuice.models.TeaItem;
 import com.example.kanjuice.models.Order;
 import com.example.kanjuice.models.User;
 import com.example.kanjuice.utils.AndroidUtils;
@@ -354,8 +354,8 @@ public class UserInputActivity extends Activity {
         order.employeeName = user.employeeName;
         order.isSwipe = isSwipe;
         for (Parcelable juice : juices) {
-            JuiceItem item = (JuiceItem) juice;
-            order.addDrink(item.juiceName, item.isSugarless, item.selectedQuantity, item.isFruit);
+            TeaItem item = (TeaItem) juice;
+            order.addDrink(item.teaName, item.isSugarless, item.selectedQuantity, item.isFruit);
         }
         Log.d(TAG, "order is being placed : " + order.toString() + " for user: " + user.toString());
         return order;
@@ -369,11 +369,11 @@ public class UserInputActivity extends Activity {
 
 
         for (Parcelable item : juices) {
-            count += ((JuiceItem) item).selectedQuantity;
+            count += ((TeaItem) item).selectedQuantity;
         }
 
         if (count == 1) {
-            return (((JuiceItem) juices[0]).juiceName +" "+ isSugarless(juices[0]));
+            return (((TeaItem) juices[0]).teaName +" "+ isSugarless(juices[0]));
         } else {
             return (count + " juices");
         }
@@ -381,8 +381,8 @@ public class UserInputActivity extends Activity {
 
 
     private String isSugarless(Parcelable juice) {
-        if (((JuiceItem) juice).isFruit) return "";
-        if (((JuiceItem) juice).isSugarless) {
+        if (((TeaItem) juice).isFruit) return "";
+        if (((TeaItem) juice).isSugarless) {
             return "Sugarless";
         } else {
             return "with Sugar";

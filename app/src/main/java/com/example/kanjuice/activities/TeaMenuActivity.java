@@ -24,7 +24,7 @@ import com.example.kanjuice.TokenServer;
 import com.example.kanjuice.adapters.CTLAdapter;
 import com.example.kanjuice.models.GCMToken;
 import com.example.kanjuice.models.Juice;
-import com.example.kanjuice.models.JuiceItem;
+import com.example.kanjuice.models.TeaItem;
 import com.example.kanjuice.service.GCMRegistrationIntentService;
 import com.example.kanjuice.util.Logger;
 import com.example.kanjuice.utils.JuiceDecorator;
@@ -40,9 +40,9 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class JuiceMenuActivity extends Activity {
+public class TeaMenuActivity extends Activity {
 
-    private static final String TAG = "JuiceMenuActivity";
+    private static final String TAG = "TeaMenuActivity";
     private static final String TOKEN_URL = "http://10.132.127.212:4000";
     private CTLAdapter adapter;
     private boolean isInMultiSelectMode = false;
@@ -53,7 +53,7 @@ public class JuiceMenuActivity extends Activity {
     private GridView juicesView;
     private View menuLoadingView;
     private BroadcastReceiver broadcastReceiver;
-    private Logger logger = Logger.loggerFor(JuiceMenuActivity.class);
+    private Logger logger = Logger.loggerFor(TeaMenuActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +121,7 @@ public class JuiceMenuActivity extends Activity {
         getJuiceServer().getJuices(new Callback<List<Juice>>() {
             @Override
             public void success(final List<Juice> juices, Response response) {
-                JuiceMenuActivity.this.runOnUiThread(new Runnable() {
+                TeaMenuActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         menuLoadingView.setVisibility(View.GONE);
@@ -147,7 +147,7 @@ public class JuiceMenuActivity extends Activity {
             @Override
             public void failure(RetrofitError error) {
                 Log.d(TAG, "Failed to fetch menu list : " + error);
-                JuiceMenuActivity.this.runOnUiThread(new Runnable() {
+                TeaMenuActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         showNoNetworkView();
@@ -258,7 +258,7 @@ public class JuiceMenuActivity extends Activity {
 
     private void onJuiceItemClick(int position) {
         if (isRegisterActivity(position)) {
-            Intent intent = new Intent(JuiceMenuActivity.this, CardSwipeActivity.class);
+            Intent intent = new Intent(TeaMenuActivity.this, CardSwipeActivity.class);
             startActivity(intent);
         } else {
             if (isInMultiSelectMode) {
@@ -270,11 +270,11 @@ public class JuiceMenuActivity extends Activity {
     }
 
     private boolean isRegisterActivity(int position) {
-        return ((JuiceItem) adapter.getItem(position)).juiceName.equals("Register User");
+        return ((TeaItem) adapter.getItem(position)).teaName.equals("Register User");
     }
 
     private boolean isFruitsSection(int position) {
-        return ((JuiceItem) adapter.getItem(position)).juiceName.equals("Fruits");
+        return ((TeaItem) adapter.getItem(position)).teaName.equals("Fruits");
     }
 
     private void setupActionLayout() {
@@ -336,25 +336,25 @@ public class JuiceMenuActivity extends Activity {
     }
 
     private void gotoSwipingScreen(int position) {
-        gotoSwipingScreen(new JuiceItem[]{(JuiceItem) adapter.getItem(position)});
+        gotoSwipingScreen(new TeaItem[]{(TeaItem) adapter.getItem(position)});
     }
 
-    private void gotoSwipingScreen(JuiceItem[] juiceItems) {
-        if (isFruitsSection(juiceItems)) {
+    private void gotoSwipingScreen(TeaItem[] teaItems) {
+        if (isFruitsSection(teaItems)) {
 //            showFruitsSection();
         } else {
-            Intent intent = new Intent(JuiceMenuActivity.this, UserInputActivity.class);
-            intent.putExtra("juices", juiceItems);
+            Intent intent = new Intent(TeaMenuActivity.this, UserInputActivity.class);
+            intent.putExtra("juices", teaItems);
             startActivity(intent);
         }
     }
 
-    private boolean isFruitsSection(JuiceItem[] juiceItems) {
-        return juiceItems[0].juiceName.equals("Fruits");
+    private boolean isFruitsSection(TeaItem[] teaItems) {
+        return teaItems[0].teaName.equals("Fruits");
     }
 
 //    private void showFruitsSection() {
-//        Intent intent = new Intent(JuiceMenuActivity.this, FruitsMenuActivity.class);
+//        Intent intent = new Intent(TeaMenuActivity.this, FruitsMenuActivity.class);
 //        startActivity(intent);
 //    }
 }
