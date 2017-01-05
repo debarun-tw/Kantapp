@@ -15,6 +15,7 @@ public class JuiceDecorator {
         imageIdMap.put("lemon tea", R.drawable.lemon_tea);
         imageIdMap.put("ginger tea", R.drawable.ginger_tea);
         imageIdMap.put("coffee", R.drawable.coffee);
+        imageIdMap.put("register user",R.drawable.register_user);
         kanTextMap = new HashMap<>();
 
     }

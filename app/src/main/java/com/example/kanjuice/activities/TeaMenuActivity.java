@@ -116,7 +116,6 @@ public class TeaMenuActivity extends Activity {
             exitMultiSelectMode();
         }
 
-        // else block back button
     }
 
     private void disableRecentAppsClick() {
@@ -162,6 +161,7 @@ public class TeaMenuActivity extends Activity {
         ctl.add("lemon tea");
         ctl.add("ginger tea");
         ctl.add("coffee");
+        ctl.add("register user");
         List<HotDrink> hotDrinks = new ArrayList<>();
         while (allDrinks.hasNext()) {
             HotDrink juice = allDrinks.next();
@@ -314,7 +314,6 @@ public class TeaMenuActivity extends Activity {
 
     private void exitMultiSelectMode() {
         adapter.reset();
-
         isInMultiSelectMode = false;
 
         ObjectAnimator anim = ObjectAnimator.ofFloat(actionButtonLayout, "translationY", -20f, 200f);
@@ -329,7 +328,6 @@ public class TeaMenuActivity extends Activity {
 
     private void enterMultiSelectionMode() {
         isInMultiSelectMode = true;
-
         actionButtonLayout.setVisibility(View.VISIBLE);
         ObjectAnimator anim = ObjectAnimator.ofFloat(actionButtonLayout, "translationY", 100f, -15f);
         anim.setDuration(500);
