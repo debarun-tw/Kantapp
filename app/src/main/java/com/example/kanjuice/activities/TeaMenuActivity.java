@@ -161,6 +161,7 @@ public class TeaMenuActivity extends Activity {
         ctl.add("lemon tea");
         ctl.add("ginger tea");
         ctl.add("coffee");
+        ctl.add("almond milk");
         ctl.add("register user");
         List<HotDrink> hotDrinks = new ArrayList<>();
         while (allDrinks.hasNext()) {

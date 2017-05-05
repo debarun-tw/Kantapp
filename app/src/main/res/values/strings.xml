@@ -47,4 +47,9 @@
     <string name="location">blr</string>
     <string name="outlet_type">ctl</string>
     <string name="device_id">124</string>
+    <string name="tea">ಚಹಾ</string>
+    <string name="lemon_tea">ನಿಂಬೆ ಚಹಾ</string>
+    <string name="ginger_tea">ಶುಂಠಿ ಚಹಾ</string>
+    <string name="coffee">ಕಾಫಿ</string>
+    <string name="almond_milk">ಬಾದಾಮಿ ಹಾಲು</string>
 </resources>

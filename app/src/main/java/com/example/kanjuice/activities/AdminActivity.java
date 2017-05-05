@@ -104,6 +104,7 @@ public class AdminActivity extends Activity implements CompoundButton.OnCheckedC
         ctl.add("lemon tea");
         ctl.add("ginger tea");
         ctl.add("coffee");
+        ctl.add("almond milk");
         List<HotDrink> hotDrinks = new ArrayList<>();
         while (allDrinks.hasNext()) {
             HotDrink juice = allDrinks.next();
