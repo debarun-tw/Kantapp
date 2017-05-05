@@ -205,12 +205,16 @@ public class UserInputActivity extends Activity {
     }
 
     private void handleEasterEggs(String whichEgg) {
-        if (whichEgg.equals("999")) {
-            showAdminPage();
-        } else if (whichEgg.equals("888")) {
-            showRegisterScreen();
-        } else if (whichEgg.equals("777")) {
-            AndroidUtils.clearKanJuiceAsDefaultApp(this);
+        switch (whichEgg) {
+            case "999":
+                showAdminPage();
+                break;
+            case "888":
+                showRegisterScreen();
+                break;
+            case "777":
+                AndroidUtils.clearKanJuiceAsDefaultApp(this);
+                break;
         }
     }
 
@@ -355,7 +359,7 @@ public class UserInputActivity extends Activity {
         order.isSwipe = isSwipe;
         for (Parcelable juice : hotDrinks) {
             TeaItem item = (TeaItem) juice;
-            order.addDrink(item.teaName, item.isSugarless, item.selectedQuantity, item.isFruit,"CTL");
+            order.addDrink(item.teaName, item.isSugarless, item.selectedQuantity, item.isFruit);
         }
         Log.d(TAG, "order is being placed : " + order.toString() + " for user: " + user.toString());
         return order;
