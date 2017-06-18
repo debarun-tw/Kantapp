@@ -222,7 +222,7 @@ public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
 
         for (HotDrink juice : juices) {
             if (juice.available) {
-                teaItems.add(new TeaItem(juice.name, juice.imageId, juice.kanId, juice.isSugarless, false));
+                teaItems.add(new TeaItem(juice.name, juice.imageId, juice.kanId, juice.isSugarless, false, juice.type));
             }
         }
         addRegisterOption();
@@ -233,7 +233,7 @@ public class CTLAdapter extends BaseAdapter implements View.OnClickListener {
     private void addRegisterOption() {
         String registerUser = "Register User";
         teaItems.add(new TeaItem(registerUser, JuiceDecorator.matchImage(registerUser),
-                JuiceDecorator.matchKannadaName(registerUser), false, false));
+                JuiceDecorator.matchKannadaName(registerUser), false, false, "ctl"));
     }
 
     public static class ViewHolder {

@@ -359,7 +359,7 @@ public class UserInputActivity extends Activity {
         order.isSwipe = isSwipe;
         for (Parcelable juice : hotDrinks) {
             TeaItem item = (TeaItem) juice;
-            order.addDrink(item.teaName, item.isSugarless, item.selectedQuantity, item.isFruit);
+            order.addDrink(item.teaName, item.isSugarless, item.selectedQuantity, item.isFruit, item.type);
         }
         Log.d(TAG, "order is being placed : " + order.toString() + " for user: " + user.toString());
         return order;
