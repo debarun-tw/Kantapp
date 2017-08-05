@@ -31,7 +31,7 @@ public class JuiceDecorator {
     public static int matchImage(String name) {
         Integer id = imageIdMap.get(name.toLowerCase().trim());
         if (id == null) {
-            id = R.drawable.mixed_fruit;
+            id = R.drawable.tea;
         }
         return id;
     }
