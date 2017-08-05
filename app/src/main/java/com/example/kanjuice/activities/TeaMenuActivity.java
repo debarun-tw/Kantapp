@@ -156,19 +156,11 @@ public class TeaMenuActivity extends Activity {
 
     @NonNull
     private List<HotDrink> filterHotDrinks(Iterator<HotDrink> allDrinks) {
-        HashSet<String> ctl = new HashSet<>();
-        ctl.add("tea");
-        ctl.add("lemon tea");
-        ctl.add("ginger tea");
-        ctl.add("coffee");
-        ctl.add("almond milk");
-        ctl.add("register user");
-        ctl.add("buttermilk");
         List<HotDrink> hotDrinks = new ArrayList<>();
         while (allDrinks.hasNext()) {
-            HotDrink juice = allDrinks.next();
-            if (ctl.contains(juice.name.toLowerCase())) {
-                hotDrinks.add(juice);
+            HotDrink ctl = allDrinks.next();
+            if (ctl.type.toLowerCase().equals("ctl")) {
+                hotDrinks.add(ctl);
             }
         }
         return hotDrinks;
