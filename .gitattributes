@@ -1,0 +1,3 @@
+fabric.properties filter=git-crypt diff=git-crypt
+KanJuiceApp.java filter=git-crypt diff=git-crypt
+KanjuiceUrls.java filter=git-crypt diff=git-crypt
